@@ -1,0 +1,11 @@
+<div class="container py-5">
+  <div class="text-center">
+    <h1 class="display-4 fw-bold">Welcome to MyApp</h1>
+    
+    <% if user_signed_in? %>
+      <p class="text-success">You're logged in as <strong><%= current_user.email %></strong>.</p>
+    <% else %>
+      <p class="text-muted">Please sign up or log in to get started.</p>
+    <% end %>
+  </div>
+</div>

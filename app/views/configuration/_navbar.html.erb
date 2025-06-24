@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-primary py-2 shadow-sm">
+  <div class="container-fluid">
+
+        <!-- Logo -->
+        <%= link_to root_path, class: 'me-2' do %>
+      <%= image_tag 'logo.png', alt: 'MyApp Logo', height: '30' %>
+    <% end %>
+
+    
+    <!-- Navbar content -->
+    <div class="collapse navbar-collapse justify-content-between" id="mainNavbar">
+
+      <!-- Left side: Home link -->
+      <ul class="navbar-nav">
+        <li class="nav-item">
+         <%= link_to 'Home', root_path, class: "nav-link text-white fw-bold" %>
+        </li>
+      </ul>
+
+      <!-- Center: Search -->
+      <form class="d-flex mx-auto" style="max-width: 400px;" role="search">
+        <input class="form-control me-2" type="search" placeholder="Search..." aria-label="Search">
+        <button class="btn btn-outline-light" type="submit">Search</button>
+      </form>
+
+      <!-- Right side: Auth Links -->
+      <div class="d-flex align-items-center">
+        <% if user_signed_in? %>
+          <span class="text-white me-2">Welcome, <%= current_user.email %></span>
+          <%= link_to 'Edit Profile', edit_user_registration_path, class: "btn btn-outline-light btn-sm me-2" %>
+          <%= button_to 'Logout', destroy_user_session_path, method: :delete, class: "btn btn-danger btn-sm" %>
+        <% else %>
+          <%= link_to 'Sign Up', new_user_registration_path, class: "btn btn-outline-light btn-sm me-2" %>
+          <%= link_to 'Login', new_user_session_path, class: "btn btn-success btn-sm me-2" %>
+          <%= link_to 'Log Out', destroy_user_session_path, method: :delete, class: "btn btn-danger btn-sm" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</nav>
