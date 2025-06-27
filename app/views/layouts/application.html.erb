@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>eCommerce</title>
-    <meta name="viewport" content="width=device-width,initial-scale=1">
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
-    <%= stylesheet_link_tag "application", media: "all" %>
-    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
- </head>
-  
-  <body>
-   <%= render 'configuration/navbar' %> 
-   <%= yield %>
-  </body>
+<head>
+   <title>eCommerce</title>
+   <meta name="viewport" content="width=device-width,initial-scale=1">
+   <%= csrf_meta_tags %>
+<%= csp_meta_tag %>
+<%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+<script type="module">
+  import Rails from "https://ga.jspm.io/npm:@rails/ujs@7.0.1/lib/assets/compiled/rails-ujs.js";
+  Rails.start();
+</script>
+</head>
+      <body>
+         <%= render 'configuration/navbar' %> 
+         <%= yield %>
+      </body>
 </html>

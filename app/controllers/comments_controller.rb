@@ -5,29 +5,35 @@ class CommentsController < ApplicationController
   before_action :authorize_user!, only: [:edit, :update, :destroy]
 
   def create
-    return head :forbidden if @product.user == current_user
-
     @comment = @product.comments.build(comment_params)
     @comment.user = current_user
 
-    if @comment.save
-      respond_to do |format|
-        format.turbo_stream
-        format.html { redirect_to @product, notice: 'Comment posted.' }
+    respond_to do |format|
+      if @comment.save
+        format.html { redirect_to @product, notice: "Comment added." }
+        format.js   # renders create.js.erb
+      else
+        format.html { redirect_to @product, alert: "Failed to comment." }
+        format.js   # renders create.js.erb with errors (optional)
       end
-    else
     end
   end
 
-  def edit 
-     
+  def edit
+    # renders edit.js.erb
+    respond_to do |format|
+      format.js
+    end
   end
 
   def update
-    if @comment.update(comment_params)
-      respond_to do |format|
-        format.turbo_stream
+    respond_to do |format|
+      if @comment.update(comment_params)
         format.html { redirect_to @product, notice: 'Comment updated.' }
+        format.js   # renders update.js.erb
+      else
+        format.html { redirect_to @product, alert: 'Update failed.' }
+        format.js   # optional: render form with errors
       end
     end
   end
@@ -35,8 +41,8 @@ class CommentsController < ApplicationController
   def destroy
     @comment.destroy
     respond_to do |format|
-      format.turbo_stream
       format.html { redirect_to @product, notice: 'Comment deleted.' }
+      format.js   # renders destroy.js.erb
     end
   end
 
@@ -55,6 +61,11 @@ class CommentsController < ApplicationController
   end
 
   def authorize_user!
-    redirect_to @product, alert: "Not authorized" unless @comment.user == current_user
+    unless @comment.user == current_user
+      respond_to do |format|
+        format.html { redirect_to @product, alert: "Not authorized." }
+        format.js { render js: "alert('Not authorized');" }
+      end
+    end
   end
 end

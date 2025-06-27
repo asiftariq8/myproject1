@@ -1,5 +1,5 @@
 <% unless @product.user == current_user %>
-  <%= form_with model: [product, comment], local: false, data: { turbo_frame: "comments" }, html: { multipart: true } do |f| %>
+  <%= form_with model: [product, comment], remote: true, html: { multipart: true, id: "new_comment_form" } do |f| %>
     <div class="mb-2">
       <%= f.text_area :content, rows: 2, class: "form-control", placeholder: "Write a comment..." %>
     </div>

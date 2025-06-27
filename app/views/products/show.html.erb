@@ -1,4 +1,4 @@
-<div class="container py-5">
+<div class="container py-5"> 
   <div class="row justify-content-center">
     <div class="col-md-10 col-lg-8">
       <div class="card shadow-sm border-0">
@@ -48,20 +48,20 @@
               <%= link_to 'Delete', product_path(@product), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
             </div>
           <% end %>
-        </div> <!-- END .card-body -->
-
-        <!-- ✅ COMMENT SECTION START -->
+        </div>     
         <hr class="my-0">
         <div class="p-4">
           <h4 class="mb-3">Comments</h4>
-          <%= turbo_frame_tag dom_id(Comment.new, :form) do %>
+
+ 
+          <div id="<%= dom_id(Comment.new, :form) %>">
             <%= render "comments/form", product: @product, comment: Comment.new %>
-          <% end %>
+          </div>
 
-
-          <%= turbo_frame_tag "comments" do %>
+          
+          <div id="comments">
             <%= render partial: "comments/list", locals: { comments: @product.comments.includes(:user).order(created_at: :desc) } %>
-          <% end %>
+          </div>
         </div>
 
       </div>

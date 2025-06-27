@@ -1,0 +1,1 @@
+document.getElementById("<%= dom_id(@comment) %>").outerHTML = `<%= j render("comments/comment_card", comment: @comment) %>`;

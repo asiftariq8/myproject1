@@ -1,0 +1,3 @@
+document.getElementById("new_comment_form").outerHTML = `<%= j(render("comments/form", product: @product, comment: Comment.new)) %>`;
+
+document.getElementById("comments").innerHTML = `<%= j(render partial: "comments/list", locals: { comments: @product.comments.includes(:user).order(created_at: :desc) }) %>`;

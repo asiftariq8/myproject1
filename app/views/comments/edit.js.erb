@@ -1,0 +1,1 @@
+document.getElementById("<%= dom_id(@comment) %>").innerHTML = `<%= j render("comments/edit_form", comment: @comment, product: @product) %>`;

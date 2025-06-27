@@ -1,0 +1,9 @@
+<%= form_with model: [product, comment], remote: true, html: { id: "edit_comment_form_#{comment.id}", multipart: true } do |f| %>
+  <div class="mb-2">
+    <%= f.text_area :content, rows: 2, class: "form-control" %>
+  </div>
+  <div class="mb-2">
+    <%= f.file_field :image, class: "form-control" %>
+  </div>
+  <%= f.submit "Update", class: "btn btn-success btn-sm" %>
+<% end %>
