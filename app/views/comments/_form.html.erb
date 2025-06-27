@@ -1,0 +1,11 @@
+<% unless @product.user == current_user %>
+  <%= form_with model: [product, comment], local: false, data: { turbo_frame: "comments" }, html: { multipart: true } do |f| %>
+    <div class="mb-2">
+      <%= f.text_area :content, rows: 2, class: "form-control", placeholder: "Write a comment..." %>
+    </div>
+    <div class="mb-2">
+      <%= f.file_field :image, class: "form-control" %>
+    </div>
+    <%= f.submit "Post Comment", class: "btn btn-primary btn-sm" %>
+  <% end %>
+<% end %>

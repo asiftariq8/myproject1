@@ -1,0 +1,60 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+          <h3 class="card-title text-center mb-4">Add New Product</h3>
+
+          <!-- Display global error message -->
+          <% if @product.errors.any? %>
+            <div class="alert alert-danger">
+              <h5 class="mb-1">Please fix the following errors:</h5>
+              <ul class="mb-0">
+                <% @product.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <%= form_with model: @product, local: true, html: { multipart: true } do |f| %>
+            <div class="mb-3">
+              <%= f.label :name, class: "form-label" %>
+              <%= f.text_field :name, class: "form-control", required: true %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :price, class: "form-label" %>
+              <%= f.number_field :price, step: 0.01, class: "form-control", required: true %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :description, class: "form-label" %>
+              <%= f.text_area :description, rows: 3, class: "form-control", required: true %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :category, class: "form-label" %>
+              <%= f.select :category, Product.categories.keys.map { |c| [c.titleize, c] }, { prompt: "Select Category" }, class: "form-control", required: true %>
+            </div>
+
+            <div class="mb-3">
+              <%= f.label :images, "Upload Images", class: "form-label" %>
+              <%= f.file_field :images, multiple: true, class: "form-control" %>
+            </div>
+
+            <% if @product.images.blank? %>
+              <div class="text-center mb-3">
+                <%= image_tag "placeholder.png", class: "img-fluid rounded shadow-sm", style: "height: 120px; object-fit: cover;" %>
+              </div>
+            <% end %>
+
+            <div class="d-grid">
+              <%= f.submit "Create Product", class: "btn btn-success" %>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
