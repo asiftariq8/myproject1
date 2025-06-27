@@ -38,5 +38,9 @@ Rails.application.configure do
   config.active_record.migration_error = :page_load
   config.active_record.verbose_query_logs = true
   config.assets.quiet = true
+  config.active_storage.service = :local
+  config.action_view.form_with_generates_remote_forms = true
+
+
 
 end
