@@ -1,0 +1,71 @@
+<div class="container py-5">
+  <h2 class="mb-4 text-center">Explore Products</h2>
+
+  <% Product.categories.keys.each do |category| %>
+    <% products_in_category = @products.select { |p| p.category == category } %>
+    <% next if products_in_category.empty? %>
+
+    <h3 class="my-4 text-capitalize"><%= category %> Items</h3>
+
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-5 g-4 mb-4">
+      <% products_in_category.first(5).each do |product| %>
+        <div class="col">
+          <div class="card h-100 shadow-sm border-0">
+            <% if product.images.attached? %>
+              <%= image_tag url_for(product.images.first), class: "card-img-top", style: "object-fit: cover; height: 200px;", alt: product.name %>
+            <% else %>
+              <%= image_tag "placeholder.png", class: "card-img-top", style: "object-fit: cover; height: 200px;", alt: "No Image Available" %>
+            <% end %>
+
+            <div class="card-body">
+              <h5 class="card-title"><%= product.name %></h5>
+              <p class="card-text text-muted">Price: <%= number_to_currency(product.price) %></p>
+              <p class="card-text"><%= truncate(product.description, length: 80) %></p>
+              <p class="card-text"><small class="text-muted">Serial #: <%= product.serial_number %></small></p>
+              <%= link_to "View Details", product_path(product), class: "btn btn-sm btn-outline-primary mt-2" %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <% if products_in_category.size > 5 %>
+      <div id="<%= "#{category}-carousel" %>" class="carousel slide mb-5" data-bs-ride="carousel">
+        <div class="carousel-inner">
+          <% products_in_category.drop(5).each_slice(5).with_index do |slice, i| %>
+            <div class="carousel-item <%= 'active' if i == 0 %>">
+              <div class="row row-cols-1 row-cols-md-2 row-cols-lg-5 g-4">
+                <% slice.each do |product| %>
+                  <div class="col">
+                    <div class="card h-100 shadow-sm border-0">
+                      <% if product.images.attached? %>
+                        <%= image_tag url_for(product.images.first), class: "card-img-top", style: "object-fit: cover; height: 200px;", alt: product.name %>
+                      <% else %>
+                        <%= image_tag "placeholder.png", class: "card-img-top", style: "object-fit: cover; height: 200px;", alt: "No Image Available" %>
+                      <% end %>
+
+                      <div class="card-body">
+                        <h5 class="card-title"><%= product.name %></h5>
+                        <p class="card-text text-muted">Price: <%= number_to_currency(product.price) %></p>
+                        <p class="card-text"><%= truncate(product.description, length: 80) %></p>
+                        <p class="card-text"><small class="text-muted">Serial #: <%= product.serial_number %></small></p>
+                        <%= link_to "View Details", product_path(product), class: "btn btn-sm btn-outline-primary mt-2" %>
+                      </div>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#<%= "#{category}-carousel" %>" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#<%= "#{category}-carousel" %>" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        </button>
+      </div>
+    <% end %>
+  <% end %>
+</div>

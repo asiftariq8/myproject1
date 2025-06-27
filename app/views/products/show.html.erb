@@ -1,0 +1,70 @@
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-10 col-lg-8">
+      <div class="card shadow-sm border-0">
+        <div class="card-body p-4">
+          <h2 class="card-title mb-3"><%= @product.name %></h2>
+
+          <p class="mb-2 text-muted">Price: <%= number_to_currency(@product.price) %></p>
+          <p class="mb-3"><strong>Category:</strong> <%= @product.category.titleize %></p>
+          <p class="mb-3"><strong>Serial Number:</strong> <%= @product.serial_number %></p>
+
+          <hr>
+
+          <div class="p-3 mb-4 rounded" style="background-color: #f9f9f9; border-left: 4px solid #0d6efd;">
+            <p class="mb-0" style="font-size: 1rem; line-height: 1.6;">
+              <%= simple_format(@product.description) %>
+            </p>
+          </div>
+
+          <% if @product.images.attached? %>
+            <div class="row row-cols-1 row-cols-md-2 g-4 mb-4">
+              <% @product.images.each do |image| %>
+                <div class="col">
+                  <%= image_tag url_for(image), class: "img-fluid rounded shadow-sm", style: "height: 200px; object-fit: cover;" %>
+                </div>
+              <% end %>
+            </div>
+          <% else %>
+            <div class="text-center mb-4">
+              <%= image_tag asset_path("placeholder.png"), class: "img-fluid rounded shadow-sm", style: "height: 200px; object-fit: cover;" %>
+            </div>
+          <% end %>
+
+          <% if user_signed_in? && current_user != @product.user %>
+            <div class="text-end">
+              <% if current_user.wishlist_products.exists?(@product.id) %>
+                <%= button_to 'Remove from Wishlist', destroy_wishlists_path(product_id: @product.id), method: :delete, class: "btn btn-outline-danger btn-sm" %>
+                <span class="badge bg-success ms-2">Already in Wishlist</span>
+              <% else %>
+                <%= button_to 'Add to Wishlist', wishlists_path(product_id: @product.id), method: :post, class: "btn btn-outline-primary btn-sm" %>
+              <% end %>
+            </div>
+          <% end %>
+
+          <% if user_signed_in? && current_user == @product.user %>
+            <div class="text-end mt-3">
+              <%= link_to 'Edit', edit_product_path(@product), class: "btn btn-warning me-2" %>
+              <%= link_to 'Delete', product_path(@product), method: :delete, data: { confirm: 'Are you sure?' }, class: "btn btn-danger" %>
+            </div>
+          <% end %>
+        </div> <!-- END .card-body -->
+
+        <!-- ✅ COMMENT SECTION START -->
+        <hr class="my-0">
+        <div class="p-4">
+          <h4 class="mb-3">Comments</h4>
+          <%= turbo_frame_tag dom_id(Comment.new, :form) do %>
+            <%= render "comments/form", product: @product, comment: Comment.new %>
+          <% end %>
+
+
+          <%= turbo_frame_tag "comments" do %>
+            <%= render partial: "comments/list", locals: { comments: @product.comments.includes(:user).order(created_at: :desc) } %>
+          <% end %>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
