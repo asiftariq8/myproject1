@@ -1,5 +1,6 @@
 <div class="container py-5">
   <h2 class="mb-4 text-center">My Products</h2>
+  <%= link_to 'Add Product', new_product_path,  class: 'btn btn-primary mb-4' %>
 
   <% if @products.any? %>
     <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
@@ -9,6 +10,7 @@
             <% if product.images.attached? %>
               <%= image_tag url_for(product.images.first), class: "card-img-top", style: "height: 200px; object-fit: cover;" %>
             <% else %>
+
               <%= image_tag "placeholder.png", class: "card-img-top", style: "height: 200px; object-fit: cover;" %>
             <% end %>
 
